@@ -8,9 +8,10 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { BalComponent } from './user/bal/bal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserServiceService } from './shared/user.service.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './user/login/login.component';
 import { HomeComponent } from './user/home/home.component';
+import { AuthInterceptor } from './auth/auth.intercepto';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,11 @@ import { HomeComponent } from './user/home/home.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [UserServiceService],
+  providers: [UserServiceService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
